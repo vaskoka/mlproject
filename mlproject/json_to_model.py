@@ -1,12 +1,17 @@
 from enum import Enum
 import json
-
+from multiprocessing.sharedctypes import Value
+from tkinter import W
 
 with open('product/products.json', 'r') as f:
   data = json.load(f)
+  
+  
+
+    
 
 # Test input JSON object - one class
-json_str =  r''' {
+json_str =  r'''[{
         "clabjectNo":"5",
         "clabject_label":"ComputerDeluxe_ComputerModel_ProductType",
         "name":"ComputerDeluxe",
@@ -36,81 +41,51 @@ json_str =  r''' {
                 "value": null
             }
         ]
- }'''
+ }]'''
 
 # read JSON string and convert to native python object      
 native_python_obj = json.loads(json_str)
-# print(native_python_obj) 
-
-class Clabject:
-       
-    def __init__(self,name):
-        self.name = name
-        
-    def get_name(self):
-        return self.name
-    
-    def set_name(self,name):
-        if name != None:
-           print("I alrady have a name")
-        else:
-            self.name = name
-            
-    def set_attribute(self, attribute):
-        attributes_list = []
-        Attribute.attribute = attribute
-        attributes_list.append(attribute)
-        
-                   
-            
-
-  
-    
-    
-
-
+print(native_python_obj) 
+             
 # ML Model output string
 
 '''
 Reads the attributes of the Clabject and returns a model string
+Helper function for 
 '''
-def get_attributes(native_python_obj):
+def get_attributes(clabject):
       attribute_str = ''
-      for attribute in native_python_obj['attributes']:
+      for attribute in clabject['attributes']:
             attribute_str = attribute_str + attribute['att_name'] 
-            
             if attribute['data_type'].casefold() == 'string'.casefold() :
                   attribute_str = attribute_str + ' = models.CharField(max_length=255)'+ '\n\t' 
-            elif attribute['data_type'].casefold() == 'int'.casefold():
-                  attribute_str = attribute_str + 'models.DecimalField(..., max_digits=5, decimal_places=2)' + '\n\t'
-                  
+            elif attribute['data_type'].casefold() == 'int'.casefold() or attribute['data_type'].casefold() == 'integer'.casefold():
+                  attribute_str = attribute_str + ' = models.IntegerField()' + '\n\t'
             elif attribute['data_type'].casefold() == 'double'.casefold():
-                   attribute_str = attribute_str + 'models.DecimalField(..., max_digits=5, decimal_places=2)' + '\n\t'
-                  
+                   attribute_str = attribute_str + ' = models.DecimalField(decimal_places=2)' + '\n\t'
             else:
-                  attribute_str + '\n\t'      
-      return attribute_str     
-
-
+                  attribute_str + '\n'   
+                     
+      return attribute_str + '\n'     
+    
+    
 # build an ORM string
-orm_model_str = 'class ' + native_python_obj['name'] + '(models.Model):' + '\n\t' + get_attributes(native_python_obj) 
-
-print(orm_model_str)
-
-
-      
-
+def create_orm_string(clabject):
+    orm_model_str = ''
+    for  clabject_name in clabject:
+        orm_model_str = orm_model_str + 'class ' + clabject_name['name'] + '(models.Model):' + '\n\t' + get_attributes(clabject_name) 
+    return orm_model_str
 
 
-'''     
-for clabject in data:
-      print (clabject, ":", data[clabject])
-      for key in clabject:
-            print(len(key))
-      if len(key) == 1:
-              
-            print (key, ":", clabject[key])
-'''
+
+f_write = open('model_temp.py', 'w')
+new_model = create_orm_string(data)
+print(new_model)
+f_write.write(new_model)
+    
+
+
+
 
 '''
 class ComputerDeluxe(models.Model):
