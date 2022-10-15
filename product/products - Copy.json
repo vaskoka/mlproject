@@ -124,6 +124,66 @@
                 "value": null
             }
         ]
- }
- 
-]
+ },
+ {
+        "clabjectNo":"7",
+        "clabject_label":"C1_ComputerStandard_ComputerModel_ProductType",
+        "name":"C1",
+        "potency":"0",
+        "subclassOf":null,
+        "instanceOf":"ComputerStandard",
+        "attributes" : [
+            {
+                "attributeID":"701",
+                "att_name":"name",
+                "data_type": "String",
+                "potency":"0",
+                "value": "PC deluxe"
+            },
+            {
+                "attributeID":"702",
+                "att_name":"processor",
+                "data_type":"String",
+                "potency":"0",
+                "value": "4.5 GHz"
+            },
+            {
+                "attributeID":"703",
+                "att_name":"price",
+                "data_type":"Double",
+                "potency":"0",
+                "value": "7.99"
+            }
+        ]
+},
+{
+        "clabjectNo":"8",
+        "clabject_label":"C2_ComputerDeluxe_ComputerModel_ProductType",
+        "name":"C2",
+        "potency":"0",
+        "subclassOf":null,
+        "instanceOf":"ComputerStandard",
+        "attributes" : [
+            {
+                "attributeID":"701",
+                "att_name":"name",
+                "data_type": "String",
+                "potency":"0",
+                "value": "PC deluxe"
+            },
+            {
+                "attributeID":"702",
+                "att_name":"processor",
+                "data_type":"String",
+                "potency":"0",
+                "value": "4.5 GHz"
+            },
+            {
+                "attributeID":"703",
+                "att_name":"price",
+                "data_type":"Double",
+                "potency":"0",
+                "value": "13.99"
+        }
+    ]
+}]

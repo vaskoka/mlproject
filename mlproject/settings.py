@@ -33,11 +33,13 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-
-     
-    'pages.apps.PagesConfig',
-    'product.apps.ProductConfig',
-    'mltool.apps.MltoolConfig',
+    'mltoolapp',
+    #'firstapp',
+    #'mltool',
+    #'product3',
+    #'pages.apps.PagesConfig',
+    #'productv2',#.apps.Productv2Config',
+    #'product.apps.ProductConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'mlproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
