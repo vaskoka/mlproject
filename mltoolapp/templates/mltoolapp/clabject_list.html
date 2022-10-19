@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Clabject List</h1>
+
+{% if clabject_list %}
+  <ul>
+
+  {% for clabject in clabject_list %}
+    <li>
+      <a href="{{ clabject.get_absolute_url }}">
+      {{ clabject }}
+      <li>
+        {% for attribute in attribute_list %}
+        {{attribute}}
+
+        {% endfor %}
+      </li>
+       
+      </a>
+
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>There are no authors available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}
+
