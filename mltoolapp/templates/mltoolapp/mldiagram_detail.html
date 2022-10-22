@@ -3,21 +3,29 @@
 {% block content %}
 
 <h1>{{ mldiagram }} </h1>
+{% if clabject_items %}
+{% for clabject in clabject_items %}
 
-{% for clabject in mldiagram_items %}
 
 
-<h1>Clabject: {{ clabject }} </h1>
-<p>Instance of:{{clabject.instanceOf}} </p>
-<li>Subclass of:{{clabject.subclassOf}}
+<h3><a href="{{ clabject.get_absolute_url }}">Clabject: {{ clabject }}</a></h3>
 
-  <p>Attributes:
-  {% for item in clabject.items %}
-    <li> {{item}}{{ item.datatype}} {{item.value }}</li>
-  {% endfor %}</p>
-  
-  {% endfor %}</p>
-  
-  <button>New Instance</button> <hr>
+<ul>
+<li>Instance of:{{clabject.instanceOf}}</li>
+<li>Subclass of:{{clabject.subclassOf}}</li>
+<li>Potency:{{clabject.potency}}</li>
+</ul>
+<p><strong>Attributes:</strong></p> 
+  {% for item in attribute_items %}
+  {% if item.clabject == clabject %}
+  <ul>
+  <li> ID:{{item.id}}; Attr name: {{ item.name}}; {{item.data_type}}; Attr value: {{item.value }}</li>
+  </ul>
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
+  {% else %}
+  <p>There are no items in the diagram available.</p>
+  {% endif %}
  
 {% endblock %}

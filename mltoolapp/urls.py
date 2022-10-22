@@ -12,14 +12,13 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('clabjects/', views.ClabjectListView.as_view(), name='clabjects'),
     path('clabjects/<int:pk>', views.ClabjectDetailView.as_view(), name='clabject-detail'),
-    path('mldiagrams/', views.ClabjectListView.as_view(), name='mldiagrams'),
-    path('mldiagams/', views.MLdiagramListView.as_view(), name='mldiagrams'),
-    path('mldiagam/<slug:slug>/', views.MLDiagramDetailView.as_view(), name='mldiagram_detail'),
+    path('mldiagrams/', views.MLdiagramListView.as_view(), name='mldiagrams'),
+    path('mldiagam/<int:pk>/', views.MLDiagramDetailView.as_view(), name='mldiagram-detail'),
     
 ]
 
 urlpatterns += [
-   path('clabject/<uuid:pk>/instantiate/', views.instantiate_clabject, name='instantiate_clabject'),
+   path('clabject/<uuid:pk>/instantiate/', views.instantiate_clabject, name='instantiate-clabject'),
 ]
 
 # The create clubject wiew url

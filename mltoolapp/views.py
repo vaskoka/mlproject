@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from traitlets import This
 from mltoolapp.forms import InstantiateClabject
 from .models import Clabject, Attribute, MLDiagram
 from django.views import generic
@@ -13,7 +14,7 @@ from django.views import generic
 
 class ClabjectListView(generic.ListView):
     model = Clabject
-    paginate_by = 1
+    paginate_by = 3
     
     context_object_name = 'clabject_list'   # your own name for the list as a template variable
     #queryset = Clabject.objects.all() # Get 5 books containing the title war
@@ -24,6 +25,7 @@ class ClabjectListView(generic.ListView):
         context = super(ClabjectListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
         context['get_attributes'] = ''
+        
         return context
     
 
@@ -36,6 +38,23 @@ class ClabjectDetailView(generic.DetailView):
         # Create any data and add it to the context
         context['items'] = Attribute.objects.filter(clabject=clabject_obj)
         return context
+
+class ClabjectCreate(CreateView):
+   
+    model = Clabject
+    fields = ['name', 'subclassOf', 'instanceOf','potency','mldiagram']
+    initial = {'name': 'Please enter a name'}
+
+class ClabjectUpdate(UpdateView):
+    model = Clabject
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
+
+class ClabjectDelete(DeleteView):
+    model = Clabject
+    success_url = reverse_lazy('clabjects')
+
+
+
 
 
 # Attributes views
@@ -55,17 +74,32 @@ class MLdiagramListView(generic.ListView):
     context_object_name = 'mldiagrams'
     template_name = 'mldiagram_list.html'
     
+
+    
     
 class MLDiagramDetailView(generic.DetailView):
     model = MLDiagram
+          
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
         context = super(MLDiagramDetailView, self).get_context_data(**kwargs)
         mldiagram_obj = self.object # this contain the object that the view is operating upon
         # Create any data and add it to the context
+        print("mldiagram_obj" , mldiagram_obj)
+       
+        clabject_items = Clabject.objects.filter(mldiagram=mldiagram_obj)
+        attribute_items = Attribute.objects.all()
+        context ['clabject_items'] = clabject_items
+        context ['attribute_items'] = attribute_items
+      
+        return context 
         
-        context['mldiagram_items'] = Clabject.objects.filter(mldiagram=mldiagram_obj)
-        return context
+       
+            
+        
+    
+    
+        
     
 # ML diagram forms   
 class MLDiagramCreate(CreateView):
@@ -125,20 +159,6 @@ def instantiate_clabject(request, pk):
     }
     return render(request, 'mltoolapp/instantiateClabject.html', context)
        
-# Clbject forms   
 
-
-class ClabjectCreate(CreateView):
-    model = Clabject
-    fields = ['name', 'subclassOf', 'instanceOf']
-    initial = {'name': 'Please enter a name'}
-
-class ClabjectUpdate(UpdateView):
-    model = Clabject
-    fields = '__all__' # Not recommended (potential security issue if more fields added)
-
-class ClabjectDelete(DeleteView):
-    model = Clabject
-    success_url = reverse_lazy('clabjects')
     
     

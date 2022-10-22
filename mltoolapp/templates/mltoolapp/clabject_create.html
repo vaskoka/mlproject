@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<h1>ML diagrams</h1>
+<h1>Clabject List</h1>
 
-{% if mldiagrams %}
+{% if clabject_list %}
   <ul>
 
-  {% for mldiagram in mldiagrams %}
+  {% for clabject in clabject_list %}
     <li>
-      <a href="{{ mldiagram.get_absolute_url }}">
-      {{ mldiagram }}
+      <a href="{{ clabject.get_absolute_url }}">
+      {{ clabject }}
       </li>
        
       </a>
@@ -20,7 +20,7 @@
 
  </ul>
 {% else %}
-  <p>There are no Multi level diagrams available.</p>
+  <p>There are no Clabjects available.</p>
 {% endif %}
         
         
