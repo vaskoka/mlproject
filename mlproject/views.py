@@ -8,7 +8,5 @@ from django.shortcuts import render
     # Return HttpResponse
  #   return HttpResponse('Hello from Django!')
 
-def index(request):
-   
-    return render('/index.html', context)
+
 

@@ -1,3 +1,4 @@
+from enum import unique
 from random import choices
 from django.urls import reverse
 from django.db import models
@@ -5,14 +6,14 @@ from django.db import models
 # Create your models here.
 
 class MLDiagram(models.Model):
-    name = models.CharField(max_length=255)
-    
+    name = models.CharField(max_length=255, unique=True)
+  
     def __str__(self):
         return self.name 
     
     def get_absolute_url(self):
         """Returns the url to access a particular book instance."""
-        return reverse('mldiagram-detail', args=[str(self.id)])
+        return reverse('mldiagram-detail',  args=[str(self.id)])
 
 class Clabject(models.Model):
     name = models.CharField(max_length=255)
