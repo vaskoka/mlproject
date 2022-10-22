@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+import os
 SECRET_KEY = 'django-insecure-7#^o&9r2$xpu=ds*0#4i!vjn00d07w*-2trxy!efmx()-v^x69'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -34,19 +35,13 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'mltoolapp',
-    #'firstapp',
-    #'mltool',
-    #'product3',
-    #'pages.apps.PagesConfig',
-    #'productv2',#.apps.Productv2Config',
-    #'product.apps.ProductConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django-console',
+    
 ]
 
 MIDDLEWARE = [
@@ -64,7 +59,7 @@ ROOT_URLCONF = 'mlproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,9 +121,12 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+STATIC_ROOT = BASE_DIR / 'staticfiles'  #. os.path.join(BASE_DIR, 'staticfiles')
+# The URL to use when referring to static files (where they will be served from)
 STATIC_URL = 'static/'
 
 # Default primary key field type

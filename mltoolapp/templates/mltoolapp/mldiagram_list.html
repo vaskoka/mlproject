@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>ML diagrams</h1>
+
+{% if mldiagrams %}
+  <ul>
+
+  {% for mldiagram in mldiagrams %}
+    <li>
+      <a href="{{ mldiagram.get_absolute_url }}">
+      {{ mldiagram }}
+      </li>
+       
+      </a>
+
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>There are no Multi level diagrams available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}
+

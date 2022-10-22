@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Clabject: {{ clabject }} </h1>
+<p>Instance of:{{clabject.instanceOf}} </p>
+<li>Subclass of:{{clabject.subclassOf}}
+
+  <p>Attributes:
+  {% for item in items %}
+    <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
+  {% endfor %}</p>
+  <button>New Instance</button> <hr>
+ 
+{% endblock %}

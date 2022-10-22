@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>{{ mldiagram }} </h1>
+{% if clabject_items %}
+{% for clabject in clabject_items %}
+
+
+
+<h3><a href="{{ clabject.get_absolute_url }}">Clabject: {{ clabject }}</a></h3>
+
+<ul>
+<li>Instance of:{{clabject.instanceOf}}</li>
+<li>Subclass of:{{clabject.subclassOf}}</li>
+<li>Potency:{{clabject.potency}}</li>
+</ul>
+<p><strong>Attributes:</strong></p> 
+  {% for item in attribute_items %}
+  {% if item.clabject == clabject %}
+  <ul>
+  <li> ID:{{item.id}}; Attr name: {{ item.name}}; {{item.data_type}}; Attr value: {{item.value }}</li>
+  </ul>
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
+  {% else %}
+  <p>There are no items in the diagram available.</p>
+  {% endif %}
+ 
+{% endblock %}

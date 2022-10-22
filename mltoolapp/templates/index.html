@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Multi Level Database Design Tool</h1>
+
+<p>Welcome to <em>Multi Level Database design Tool</em> 
+
+
+<div>
+    
+{% load static %}
+<img src="{% static "images/sample_ml_model.png" %}" alt="Sample Multi level model" width="603px">
+</div>  
+
+<div>
+<h3>MLDB tool content</h3>
+
+<p>The MLDB tool has the following record counts:</p>
+<ul>
+    <!-- diagrams, clabjects, attributes are defined in the views.py  index function -->
+<li><strong>MLDB diagrams:</strong> {{ num_mldiagrams }}</li>
+<li><strong>Clabjects:</strong> {{ num_clabjects }}</li>
+<li><strong>Attributes:</strong> {{ num_attributes }}</li>
+</ul>
+</div>
+
+<p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+
+{% endblock %}
