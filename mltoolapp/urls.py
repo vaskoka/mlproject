@@ -18,7 +18,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('clabject/<uuid:pk>/instantiate/', views.instantiate_clabject, name='instantiate_clabject'),
+   path('clabject/<uuid:pk>/instantiate/', views.instantiate_clabject, name='instantiate_clabject'),
 ]
 
 # The create clubject wiew url

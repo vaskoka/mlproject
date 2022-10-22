@@ -1,31 +1,28 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1>Multi Level Database design Tool</h1>
+<h1>Multi Level Database Design Tool</h1>
 
-<p>Welcome to <em>LocalLibrary</em>, a very basic Django website developed as a <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website">tutorial example</a> on the Mozilla Developer Network.</p>
-<p>The tutorial demonstrates how to create a Django skeleton website and application, define URL mappings, views (including Generic List and Detail Views), models and templates.</p>
+<p>Welcome to <em>Multi Level Database design Tool</em> 
 
-
-<h2>UML Models</h2>
-<p>An UML diagram of the site's Django model structure is shown below. </p>
 
 <div>
+    
 {% load static %}
-<img src="{% static "images/local_library_model_uml.png" %}" alt="My image" width="600px">
+<img src="{% static "images/sample_ml_model.png" %}" alt="Sample Multi level model" width="603px">
 </div>  
 
+<div>
+<h3>MLDB tool content</h3>
 
-<h2>Dynamic content</h2>
-
-<p>The library has the following record counts:</p>
+<p>The MLDB tool has the following record counts:</p>
 <ul>
-<li><strong>Clubjects:</strong> {{ num_clabjects }}</li>
-<li><strong>Copies:</strong> {{ num_instances }}</li>
-<li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-<li><strong>Authors:</strong> {{ num_authors }}</li>
+    <!-- diagrams, clabjects, attributes are defined in the views.py  index function -->
+<li><strong>MLDB diagrams:</strong> {{ num_mldiagrams }}</li>
+<li><strong>Clabjects:</strong> {{ num_clabjects }}</li>
+<li><strong>Attributes:</strong> {{ num_attributes }}</li>
 </ul>
-
+</div>
 
 <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
 
