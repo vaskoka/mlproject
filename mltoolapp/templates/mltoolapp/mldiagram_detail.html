@@ -2,14 +2,22 @@
 
 {% block content %}
 
+<h1>{{ mldiagram }} </h1>
+
+{% for clabject in mldiagram_items %}
+
+
 <h1>Clabject: {{ clabject }} </h1>
 <p>Instance of:{{clabject.instanceOf}} </p>
 <li>Subclass of:{{clabject.subclassOf}}
 
   <p>Attributes:
-  {% for item in items %}
-    <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
+  {% for item in clabject.items %}
+    <li> {{item}}{{ item.datatype}} {{item.value }}</li>
   {% endfor %}</p>
+  
+  {% endfor %}</p>
+  
   <button>New Instance</button> <hr>
  
 {% endblock %}

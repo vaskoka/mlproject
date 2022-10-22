@@ -11,11 +11,6 @@
     <li>
       <a href="{{ clabject.get_absolute_url }}">
       {{ clabject }}
-      <li>
-        {% for attribute in attribute_list %}
-        {{attribute}}
-
-        {% endfor %}
       </li>
        
       </a>
@@ -25,7 +20,7 @@
 
  </ul>
 {% else %}
-  <p>There are no authors available.</p>
+  <p>There are no Clabjects available.</p>
 {% endif %}
         
         
