@@ -18,19 +18,19 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-   path('clabject/<uuid:pk>/instantiate/', views.instantiate_clabject, name='instantiate-clabject'),
+   path('clabject/<int:pk>/instantiate/', views.instantiate_clabject, name='instantiate-clabject'),
 ]
 
 # The create clubject wiew url
 urlpatterns += [
-    path('clabject/create/', views.ClabjectCreate.as_view(), name='clabject_create'),
+    path('clabject/create/', views.ClabjectCreate.as_view(), name='clabject-create'),
     path('clabject/<int:pk>/update/', views.ClabjectUpdate.as_view(), name='clabject-update'),
     path('clabject/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='clabject-delete'),
 ]
 
 # The create Ml diagram wiew url
 urlpatterns += [
-    path('mldiagram/create/', views.MLDiagramCreate.as_view(), name='mldiagram_create'),
-    path('mldiagram/<int:pk>/update/', views.ClabjectUpdate.as_view(), name='mldiagram-update'),
-    path('mldiagram/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='mldiagram-delete'),
+    path('mldiagram/create/', views.MLDiagramCreate.as_view(), name='mldiagram-create'),
+   # path('mldiagram/<int:pk>/update/', views.MLDiagramUpdate.as_view(), name='mldiagram-update'),
+    #path('mldiagram/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='mldiagram-delete'),
 ]

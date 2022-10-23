@@ -1,9 +1,10 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from traitlets import This
-from mltoolapp.forms import InstantiateClabject
+from mltoolapp.forms import InstantiateClabjectForm
 from .models import Clabject, Attribute, MLDiagram
 from django.views import generic
 
@@ -17,8 +18,7 @@ class ClabjectListView(generic.ListView):
     paginate_by = 3
     
     context_object_name = 'clabject_list'   # your own name for the list as a template variable
-    #queryset = Clabject.objects.all() # Get 5 books containing the title war
-    template_name = 'clabject/my_arbitrary_template_name_list.html'  # Specify your own template name/location
+    # template_name = 'clabject/my_arbitrary_template_name_list.html'  # Specify your own template name/location
     
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -40,7 +40,6 @@ class ClabjectDetailView(generic.DetailView):
         return context
 
 class ClabjectCreate(CreateView):
-   
     model = Clabject
     fields = ['name', 'subclassOf', 'instanceOf','potency','mldiagram']
     initial = {'name': 'Please enter a name'}
@@ -48,12 +47,12 @@ class ClabjectCreate(CreateView):
 class ClabjectUpdate(UpdateView):
     model = Clabject
     fields = '__all__' # Not recommended (potential security issue if more fields added)
-
+    
+    
+    
 class ClabjectDelete(DeleteView):
     model = Clabject
     success_url = reverse_lazy('clabjects')
-
-
 
 
 
@@ -63,10 +62,7 @@ class AttributeListView(generic.ListView):
 
 class AttributeDetailView(generic.DetailView):
     model = Attribute
-    
-
-    
-    
+       
 # ML diagram views    
 
 class MLdiagramListView(generic.ListView):
@@ -89,28 +85,17 @@ class MLDiagramDetailView(generic.DetailView):
         # Return the clabject and attribute objects 
         clabject_items = Clabject.objects.filter(mldiagram=mldiagram_obj)
         attribute_items = Attribute.objects.all()
-       
         context ['clabject_items'] = clabject_items
         context ['attribute_items'] = attribute_items
       
         return context 
-        
-       
-       
+              
     
 # ML diagram forms   
 class MLDiagramCreate(CreateView):
     model = MLDiagram
     fields = ['name']
     initial = {'name': 'Please enter a name'}
- 
-# class ClabjectUpdate(UpdateView):
-  #  model = Clabject
-   # fields = '__all__' # Not recommended (potential security issue if more fields added)
-
-class ClabjectDelete(DeleteView):
-    model = MLDiagram
-    success_url = reverse_lazy('clabjects')   
     
 
 # Index page view         
@@ -124,37 +109,42 @@ def index(request):
     num_attributes = Attribute.objects.all().count()
 
     # The 'all()' is implied by default.
-    
-
     context = {
         'num_mldiagrams':num_mldiagrams,
         'num_clabjects': num_clabjects,
         'num_attributes': num_attributes,
     }
-       
-
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
 
-
-
-# @permission_required('catalog.can_mark_returned', raise_exception=True)
 def instantiate_clabject(request, pk):
-    """View function for renewing a specific BookInstance by librarian."""
+    
     clabject_instance = get_object_or_404(Clabject, pk=pk)
+    print(clabject_instance)
+    
+     # If this is a POST request then process the Form data
+    if request.method == 'POST':
+         # Create a form instance and populate it with data from the request (binding):
+        form = InstantiateClabjectForm(request.POST, initial=clabject_instance.name)
+        print(form)
+         # Check if the form is valid:
+        if form.is_valid():
+            name = form.cleaned_data['yohoooo']
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            # book_instance.due_back = form.cleaned_data['renewal_date']
+            clabject_instance.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('Thank you')
+    
+    else:
+        form = InstantiateClabjectForm( )
 
-    # If this is a POST request then process the Form data
-    request.method == 'GET'
-        
-
-        # Create a form instance and populate it with data from the request (binding):
-    form = InstantiateClabject(request.GET)
-    context = {
-    'form': form,
-    'clabject_instance': clabject_instance
+        context = {
+            'form': form,
+            'clabject_instance': clabject_instance
     }
-    return render(request, 'mltoolapp/instantiateClabject.html', context)
+    return render(request, 'mltoolapp/instantiate_clabject.html', context)
        
 
     
