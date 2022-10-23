@@ -1,0 +1,129 @@
+[{
+    "clabjectNo":"1",
+    "clabject_label":"ProductType",
+    "name":"ProductType",
+    "potency":"0",
+    "subclassOf": null,
+    "instanceOf": null,
+    "attributes" : [
+        {
+            "attributeID":"101",
+            "att_name":"name",
+            "data_type": "String",
+            "potency":"1",
+            "value": null
+        }]
+            
+},
+{
+    "clabjectNo":"2",
+    "clabject_label":"ComputerModel_ProductType",
+    "name":"ComputerModel",
+    "potency":"2",
+    "subclassOf":"ProductType",
+    "instanceOf": null,
+    "attributes" : [
+    {
+            "attributeID":"201",
+            "att_name":"processor",
+            "data_type": "String",
+            "potency":"1",
+            "value": null
+        },
+        {
+            "attributeID":"202",
+            "att_name":"price",
+            "data_type": "Double",
+            "potency":"2",
+            "value": null
+        }
+    ]
+},
+{
+    "clabjectNo":"3",
+    "clabject_label":"MonitorModel_ProductType",
+    "name":"MonitorModel",
+    "potency":"2",
+    "subclassOf":"ProductType",
+    "instanceOf": null,
+    "attributes" : [
+    {
+        "attributeID":"301",
+        "att_name":"size",
+        "data_type": "String",
+        "potency":"1",
+        "value": null
+    },
+    {
+        "attributeID":"302",
+        "att_name":"picQlty",
+        "data_type":"Integer",
+        "potency":"2",
+        "value": null
+    }
+    ]
+},
+{
+        "clabjectNo":"4",
+        "clabject_label":"ComputerStandard_ComputerModel_ProductType",
+        "name":"ComputerStandard",
+        "potency":"1",
+        "subclassOf":null,
+        "instanceOf":"ComputerModel",
+        "attributes" : [
+            {
+                "attributeID":"401",
+                "att_name":"name",
+                "data_type": "String",
+                "potency":"0",
+                "value": "PC standard"
+            },
+            {
+                "attributeID":"402",
+                "att_name":"processor",
+                "data_type":"String",
+                "potency":"0",
+                "value": "3.1 GHz"
+            },
+            {
+                "attributeID":"403",
+                "att_name":"price",
+                "data_type":"Double",
+                "potency":"1",
+                "value": null
+            }
+        ]
+ },
+ {
+        "clabjectNo":"5",
+        "clabject_label":"ComputerDeluxe_ComputerModel_ProductType",
+        "name":"ComputerDeluxe",
+        "potency":"1",
+        "subclassOf":null,
+        "instanceOf":"ComputerModel",
+        "attributes" : [
+            {
+                "attributeID":"501",
+                "att_name":"name",
+                "data_type": "String",
+                "potency":"0",
+                "value": "PC deluxe"
+            },
+            {
+                "attributeID":"502",
+                "att_name":"processor",
+                "data_type":"String",
+                "potency":"0",
+                "value": "4.5 GHz"
+            },
+            {
+                "attributeID":"403",
+                "att_name":"price",
+                "data_type":"Double",
+                "potency":"1",
+                "value": null
+            }
+        ]
+ }
+ 
+]

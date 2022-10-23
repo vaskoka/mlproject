@@ -86,20 +86,17 @@ class MLDiagramDetailView(generic.DetailView):
         mldiagram_obj = self.object # this contain the object that the view is operating upon
         # Create any data and add it to the context
         print("mldiagram_obj" , mldiagram_obj)
-       
+        # Return the clabject and attribute objects 
         clabject_items = Clabject.objects.filter(mldiagram=mldiagram_obj)
         attribute_items = Attribute.objects.all()
+       
         context ['clabject_items'] = clabject_items
         context ['attribute_items'] = attribute_items
       
         return context 
         
        
-            
-        
-    
-    
-        
+       
     
 # ML diagram forms   
 class MLDiagramCreate(CreateView):
