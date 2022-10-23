@@ -29,10 +29,7 @@ class Clabject(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a particular book instance."""
         return reverse('clabject-detail', args=[str(self.id)])
-            
-       
-    
-    
+               
 class Attribute(models.Model):
     DATA_TYPE = (
         ('STRING', 'Text input'),
