@@ -10,6 +10,7 @@
   {% for item in items %}
     <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
   {% endfor %}</p>
-  <button>New Instance</button> <hr>
- 
+  <a href="{% url 'clabject-update' clabject.id %}">Update clabject</a><hr>
+  <a href="{% url 'instantiate-clabject' clabject.id %}">Instantiate clabject</a><hr>
+
 {% endblock %}
