@@ -96,8 +96,6 @@ class MLDiagramCreate(CreateView):
     model = MLDiagram
     fields = ['name']
     initial = {'name': 'Please enter a name'}
-    
-
 # Index page view         
 
 def index(request):
@@ -121,29 +119,38 @@ def index(request):
 def instantiate_clabject(request, pk):
     
     clabject_instance = get_object_or_404(Clabject, pk=pk)
-    print(clabject_instance)
+    data = {
+            'name' : clabject_instance.instanceOf,
+        }
+  
     
      # If this is a POST request then process the Form data
     if request.method == 'POST':
+      
+       
          # Create a form instance and populate it with data from the request (binding):
-        form = InstantiateClabjectForm(request.POST, initial=clabject_instance.name)
-        print(form)
+        form = InstantiateClabjectForm(request.POST)
+        print("requestttt:"  , request.POST)
          # Check if the form is valid:
-        if form.is_valid():
-            name = form.cleaned_data['yohoooo']
+        #if form.is_valid():
+        #    form  = form.cleaned_data['initial=clabject_instance.name']
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
             # book_instance.due_back = form.cleaned_data['renewal_date']
-            clabject_instance.save()
+        #    clabject_instance.save()
+        #    print (form.name)
             # redirect to a new URL:
-            return HttpResponseRedirect('Thank you')
+        #    return HttpResponseRedirect('Thank you')
+        
     
     else:
-        form = InstantiateClabjectForm( )
+        print("goooooooooddd")
+        form = InstantiateClabjectForm(data)
 
         context = {
             'form': form,
-            'clabject_instance': clabject_instance
-    }
+            'clabject_instance': clabject_instance,
+            }
+        print(context)
     return render(request, 'mltoolapp/instantiate_clabject.html', context)
        
 

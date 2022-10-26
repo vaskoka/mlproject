@@ -5,21 +5,9 @@
 <form action="" method="post">
     {% csrf_token %}
     <div>
-    <table>h1>Clabject: {{ clabject.id }} </h1>
-        <p>Instance of:{{clabject.instanceOf}} </p>
-        <li>Subclass of:{{clabject.subclassOf}}
-        
-          <p>Attributes:
-          {% for item in items %}
-            <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
-          {% endfor %}</p>
-          <label for="name">Clabject name: </label>
-<input id="your_name" type="text" name="name" maxlength="100" required>
-    </table>
     <table>
-        {{ form.as_table }}
+    {{ form.as_table }}
     </table>
-
     <input type="submit" value="Submit">
 </div>
 </form>
