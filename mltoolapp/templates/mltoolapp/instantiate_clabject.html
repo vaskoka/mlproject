@@ -8,6 +8,14 @@
     <table>
     {{ form.as_table }}
     </table>
+    <h1>Clabject: {{ clabject_instance }} </h1>
+<p>Potency:{{clabject_instance.potency}} </p>
+<li>Subclass of:{{clabject.subclassOf}}
+
+  <p>Attributes:
+  {% for item in attribute_list %}
+    <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
+  {% endfor %}</p>
     <input type="submit" value="Submit">
 </div>
 </form>

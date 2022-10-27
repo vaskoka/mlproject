@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('clabjects/', views.ClabjectListView.as_view(), name='clabjects'),
     path('clabject/<int:pk>', views.ClabjectDetailView.as_view(), name='clabject-detail'),
+     path('attribute/<int:pk>', views.AttributeDetailView.as_view(), name='attribute-detail'),
     path('mldiagrams/', views.MLdiagramListView.as_view(), name='mldiagrams'),
     path('mldiagam/<slug:slug>/', views.MLDiagramDetailView.as_view(), name='mldiagram-detail'),
     
@@ -31,8 +32,8 @@ urlpatterns += [
 # The create Attribute wiew url
 urlpatterns += [
     path('attribute/create/', views.AttributeCreate.as_view(), name='attribute-create'),
-    path('attribute/<int:pk>/update/', views.ClabjectUpdate.as_view(), name='attribute-update'),
-    path('attribute/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='atribute-delete'),
+    path('attribute/<int:pk>/update/', views.AttributeUpdate.as_view(), name='attribute-update'),
+    path('attribute/<int:pk>/delete/', views.AttributeDelete.as_view(), name='atribute-delete'),
 ]
 
 # The create Ml diagram wiew url

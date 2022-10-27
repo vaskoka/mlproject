@@ -61,8 +61,14 @@ class AttributeCreate(CreateView):
     fields = ['clabject','name','data_type','value', 'potency']
     
     initial = {'name': 'Please enter a name'}
+    
+class AttributeUpdate(UpdateView):
+    model = Clabject
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
 
-
+class AttributeDelete(DeleteView):
+    model = Clabject
+    success_url = reverse_lazy('attributes')
 
 # Attributes views
 class AttributeListView(generic.ListView):
@@ -95,7 +101,6 @@ class MLDiagramDetailView(generic.DetailView):
         attribute_items = Attribute.objects.all()
         context ['clabject_items'] = clabject_items
         context ['attribute_items'] = attribute_items
-      
         return context 
               
     
@@ -127,18 +132,24 @@ def index(request):
 
 
 def instantiate_clabject(request, pk):
+    
     print("Request:    ",request)
     clabject_instance = get_object_or_404(Clabject, pk=pk)
     attribute_list = Attribute.objects.filter(clabject=clabject_instance)
+    def minus_one(num):
+        if num >= 1:
+            num = num-1
+        return num
     data = {
             
-            'potency': int(clabject_instance.potency) -1,
+            'potency': minus_one(clabject_instance.potency),
             'instanceOf': clabject_instance.name,
             'mldiagram':clabject_instance.mldiagram,
-            
+            'attribute_list':attribute_list
         }
   
-    
+   
+        
      # If this is a POST request then process the Form data
     if request.method == 'POST':
       
@@ -148,12 +159,16 @@ def instantiate_clabject(request, pk):
         data = request.POST
         print(data['name'])
         data['potency']
+        try:
        #  Clabject(id=10, name='NewModel',potency=3, instanceOf_id=3, mldiagram_id=1,subclassOf_id=2 )
-        new_clabject = Clabject(id=((clabject_instance.id)+random.randint(50, 500)+1), name=data['name'], potency = data['potency'],
+       # id field (id=((clabject_instance.id)+random.randint(50, 500)+1),)
+            new_clabject = Clabject( name=data['name'], potency = data['potency'],
                                 instanceOf = clabject_instance, mldiagram=clabject_instance.mldiagram, subclassOf = clabject_instance.subclassOf)
        
-        new_clabject.save()
-        return HttpResponseRedirect(reverse('clabjects'))
+            new_clabject.save()
+            return HttpResponseRedirect(reverse('clabjects'))
+        except:
+            return HttpResponseRedirect(reverse('clabject-form'))
         
     
     else:
@@ -164,6 +179,7 @@ def instantiate_clabject(request, pk):
         context = {
             'form': form,
             'clabject_instance': clabject_instance,
+            'attribute_list':attribute_list
             }
         print(context)
     return render(request, 'mltoolapp/instantiate_clabject.html', context)

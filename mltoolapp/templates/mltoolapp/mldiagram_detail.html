@@ -4,9 +4,9 @@
 {% block content %}
 <div class="container">
 
-  <div></div><div><h2>{{ mldiagram }} </h2>
+  <div class="container text-center"><h2>{{ mldiagram }} </h2>
 
-    {% if clabject_items %}
+    {% if mldiagrams %}
   
     {% for clabject in clabject_items %}
     
@@ -34,7 +34,7 @@
       </tr>
       <tr>
         <td><ul>
-          <li>Instance of:{{clabject.instanceOf}}</li>
+          <li>Instance of:<strong>{{clabject.instanceOf}}</strong></li>
           <li>Subclass of:{{clabject.subclassOf}}</li>
           <li>Potency:{{clabject.potency}}</li>
           </ul>
@@ -45,7 +45,7 @@
         <td>  {% for item in attribute_items %}
           {% if item.clabject == clabject %}
           <ul>
-          <li> ID:{{item.id}}; Attr name: {{ item.name}}; {{item.data_type}}; Attr value: {{item.value }}</li>
+          <li> ID:{{item.id}}; Attr name:<strong> {{ item.name}};</strong> {{item.data_type}}; Attr value: {{item.value }}</li>
           </ul>
           {% endif %}
           {% endfor %}
@@ -71,7 +71,7 @@
         <td>  {% for item in attribute_items %}
           {% if item.clabject == clabject %}
           <ul>
-          <li> ID:{{item.id}}; Attr name: {{ item.name}}; {{item.data_type}}; Attr value: {{item.value }}</li>
+          <li> ID:{{item.id}}; Attr name:<strong> {{ item.name}}</strong>; {{item.data_type}}; Attr value: {{item.value }}</li>
           </ul>
           {% endif %}
           {% endfor %}

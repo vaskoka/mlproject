@@ -23,6 +23,5 @@ class MLDiagramModelTest(TestCase):
   
     def test_get_absolute_url(self):
         mldiagram = MLDiagram.objects.get(id=1)
-        print('ML:  ', mldiagram)
         # This will also fail if the urlconf is not defined.
         self.assertEqual(mldiagram.get_absolute_url(), '/mltoolapp/mldiagam/new-test-diagram/')
