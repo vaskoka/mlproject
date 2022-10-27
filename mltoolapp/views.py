@@ -1,3 +1,4 @@
+import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -53,6 +54,13 @@ class ClabjectUpdate(UpdateView):
 class ClabjectDelete(DeleteView):
     model = Clabject
     success_url = reverse_lazy('clabjects')
+    
+
+class AttributeCreate(CreateView):
+    model = Attribute
+    fields = ['clabject','name','data_type','value', 'potency']
+    
+    initial = {'name': 'Please enter a name'}
 
 
 
@@ -116,11 +124,18 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+
+
 def instantiate_clabject(request, pk):
-    
+    print("Request:    ",request)
     clabject_instance = get_object_or_404(Clabject, pk=pk)
+    attribute_list = Attribute.objects.filter(clabject=clabject_instance)
     data = {
-            'name' : clabject_instance.instanceOf,
+            
+            'potency': int(clabject_instance.potency) -1,
+            'instanceOf': clabject_instance.name,
+            'mldiagram':clabject_instance.mldiagram,
+            
         }
   
     
@@ -129,20 +144,20 @@ def instantiate_clabject(request, pk):
       
        
          # Create a form instance and populate it with data from the request (binding):
-        form = InstantiateClabjectForm(request.POST)
-        print("requestttt:"  , request.POST)
-         # Check if the form is valid:
-        #if form.is_valid():
-        #    form  = form.cleaned_data['initial=clabject_instance.name']
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            # book_instance.due_back = form.cleaned_data['renewal_date']
-        #    clabject_instance.save()
-        #    print (form.name)
-            # redirect to a new URL:
-        #    return HttpResponseRedirect('Thank you')
+        # form = InstantiateClabjectForm(request.POST)
+        data = request.POST
+        print(data['name'])
+        data['potency']
+       #  Clabject(id=10, name='NewModel',potency=3, instanceOf_id=3, mldiagram_id=1,subclassOf_id=2 )
+        new_clabject = Clabject(id=((clabject_instance.id)+random.randint(50, 500)+1), name=data['name'], potency = data['potency'],
+                                instanceOf = clabject_instance, mldiagram=clabject_instance.mldiagram, subclassOf = clabject_instance.subclassOf)
+       
+        new_clabject.save()
+        return HttpResponseRedirect(reverse('clabjects'))
         
     
     else:
+        print(clabject_instance.instanceOf)
         print("goooooooooddd")
         form = InstantiateClabjectForm(data)
 

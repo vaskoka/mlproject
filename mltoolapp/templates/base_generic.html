@@ -1,84 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  {% block title %}<title>Multi Level Database Modeling Tool</title>{% endblock %}
+  {% load static %}
+  <script src="{% static 'app.js' %}"></script>  
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+  <title>{% block title %}Multi Level Database Modeling Tool{% endblock %}</title>
+  
   
   <!-- Add additional CSS in static file -->
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	 {% load static %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
 <body>
-
-<div class="container-fluid">
-
-<div class="row">
-  <div class="col-sm-2">
-  {% block sidebar %}
-  <ul class="sidebar-nav">
-    <li><a href="{% url 'index' %}">Home</a></li>
-    <li><a href="{% url 'mldiagram-create' %}">New ML diagram</a></li>
-    <li><a href="{% url 'mldiagrams' %}">ML diagrams list</a></li>
-    <li><a href="{% url 'clabject-create' %}">New clabject</a></li>
-    <li><a href="{% url 'clabjects' %}">All clabjects</a></li>
-    <li><a href="{% url 'index' %}">Placeholder</a></li>
-  </ul>
- 
-  <!-- User login functionality, Not implemented -->
-  <ul class="sidebar-nav">
-   {% if user.is_authenticated %}
-     <li>User: {{ user.get_username }}</li>
-     <li><a href="{% url 'index' %}">Placeholder</a></li>
-     <li><a href="{% url 'index'%}?next={{request.path}}">Logout</a></li>   
-   {% else %}
-     <li><a href="{% url 'index'%}?next={{request.path}}">Login</a></li>   
-   {% endif %} 
-  </ul>
-  
-   {% if user.is_staff %}
-   <hr>
-   <ul class="sidebar-nav">
-   <li>Staff</li>
-   {% if perms.catalog.can_mark_returned %}
-   <li><a href="{% url 'index' %}">Placeholder</a></li>
-   {% endif %}
-   </ul>
+  <div id="mldbmtsidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" align="center">&times;</a>
+    <center>
+    <h2>Multilevel Database</h2>
+    <h5>Modelling Tool</h5>
+    </center>
+    <br><br>
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'mldiagram-create' %}">New ML diagram</a>
+    <a href="{% url 'mldiagrams' %}">ML diagrams list</a>
+    <a href="{% url 'clabject-create' %}">New clabject</a>
+    <a href="{% url 'clabjects' %}">All clabjects</a>
+    <a href="{% url 'attribute-create' %}">New Attribute</a>
+    
+    <!-- User login functionality, Not implemented -->
+    {% if user.is_authenticated %}
+      User: {{ user.get_username }}
+      <a href="{% url 'index' %}">Placeholder</a>
+      <a href="{% url 'index'%}?next={{request.path}}">Logout</a>
+    {% else %}
+      <a href="{% url 'index'%}?next={{request.path}}">Login</a>
     {% endif %}
- 
-{% endblock %}
+
+    {% if user.is_staff %}
+    Staff
+    {% if perms.catalog.can_mark_returned %}
+    <a href="{% url 'index' %}">Placeholder</a>
+    {% endif %}
+    {% endif %}
   </div>
-  <div class="col-sm-10 ">
-  {% block content %}{% endblock %}
-
-
-
-  <!-- Pagination functionality to the list view objects -->
-  {% block pagination %}
+  
+  
+  <div id="main">
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
+    <!-- Pagination functionality to the list view objects -->
+    {% block content %}{% endblock %}
+    {% block pagination %}
+    
     {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
+      <div class="pagination">
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+          <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+          {% endif %}
+        </span>
+      </div>
     {% endif %}
-  {% endblock %} 
-  
-  
+    {% endblock %}
   </div>
-</div>
 
-</div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+
 </body>
 </html>

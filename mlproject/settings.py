@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'jquery',
     'mltoolapp',
     'django.contrib.admin',
     'django.contrib.auth',
