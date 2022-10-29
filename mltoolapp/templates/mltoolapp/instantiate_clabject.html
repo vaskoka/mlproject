@@ -14,9 +14,27 @@
 
   <p>Attributes:
   {% for item in attribute_list %}
-    <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
+    <li>Attribute: {{ item}}; DataType: {{ item.datatype}} ;Potency {{item.potency}}; Value: {{item.value }}</li>
+    {% if item.potency == 0 %}
+    <p>Please enter value for attribute {{item.name}}</p> 
+    <div class="fieldWrapper">
+      {{ form.InstantiateClabjectForm.errors }}
+      {{ form.InstantiateClabjectForm.label_tag }}
+      {{ form.InstantiateClabjectForm }}
+      {% endif %}
+  </div>
   {% endfor %}</p>
+  {% for attribute in attribute_list %}
+<tr>
+  <td>{{ attribute.name }}</td>
+  <td>{{ attribute.datatype }}</td>
+  <td>{{ attribute.value }}</td>
+ 
+</tr>
+{% endfor %}
+
     <input type="submit" value="Submit">
+    <a href="{% url 'attribute-create' %}">Add attribute</a><hr>
 </div>
 </form>
 {% endblock %}

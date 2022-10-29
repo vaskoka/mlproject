@@ -6,7 +6,12 @@
     <div class="mb-3 form-check">
     {% csrf_token %}
     <table>
-    {{ form.as_table }}
+       
+        {{form.clabject(clabject)}}
+        {{form.name}}
+       
+       
+    {% comment %} {{ form.as_table }} {% endcomment %}
     </table>
     <input type="submit" value="Submit">
 </div>

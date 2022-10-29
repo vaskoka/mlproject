@@ -7,14 +7,14 @@
     <div>
     <table>
        <hr>
-       <h5>Create a new Clabject for {{ mldiagram}}</h5>
+       <h5>Create a new Attribute for {{clabject}}</h5>
 
 
     <div><p>Name: {{ form.name  }}<hr>
-    {{ form.mldiagram.as_hidden }} 
+    {{ form.clabject.as_hidden }} 
     Potency: {{ form.potency }}
-    instance Of{{ form.instanceOf }}
-    subclass Of{{ form.subclassOf }}
+    DATA TYPE{{ form.data_type }}
+    Value: {{ form.value }}
     </p>
 </div>
 

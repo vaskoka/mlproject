@@ -10,7 +10,8 @@
   {% for item in items %}
     <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
   {% endfor %}</p>
-  <a href="{% url 'clabject-update' clabject.id %}">Update clabject</a><hr>
-  <a href="{% url 'instantiate-clabject' clabject.id %}">Instantiate clabject</a><hr>
-
+  <a href="{% url 'attribute-createxxx' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Add an Attribute</button></a>
+  <a href="{% url 'clabject-update' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Update clabject</button></a>
+  <a href="{% url 'instantiate-clabject' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Instantiate clabject</button></a><hr>
+  <input type=button class="btn btn-outline-dark" value="Previous Page" onClick="javascript:history.go(-1);">
 {% endblock %}
