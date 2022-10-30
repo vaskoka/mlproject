@@ -33,7 +33,6 @@
     <!-- User login functionality, Not implemented -->
     {% if user.is_authenticated %}
       User: {{ user.get_username }}
-      <a href="{% url 'index' %}">Placeholder</a>
       <a href="{% url 'index'%}?next={{request.path}}">Logout</a>
     {% else %}
       <a href="{% url 'index'%}?next={{request.path}}">Login</a>
@@ -42,7 +41,6 @@
     {% if user.is_staff %}
     Staff
     {% if perms.catalog.can_mark_returned %}
-    <a href="{% url 'index' %}">Placeholder</a>
     {% endif %}
     {% endif %}
   </div>
@@ -52,6 +50,7 @@
     <button class="openbtn" onclick="openNav()">&#9776;</button>
     <!-- Pagination functionality to the list view objects -->
     {% block content %}{% endblock %}
+    
     {% block pagination %}
     
     {% if is_paginated %}

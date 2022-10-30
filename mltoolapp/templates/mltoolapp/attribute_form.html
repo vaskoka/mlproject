@@ -7,13 +7,10 @@
     {% csrf_token %}
     <table>
        
-        {{form.clabject(clabject)}}
-        {{form.name}}
-       
-       
-    {% comment %} {{ form.as_table }} {% endcomment %}
-    </table>
-    <input type="submit" value="Submit">
+  
+        {{form.as_table}}
+    </table><hr>
+    <input class="btn btn-outline-dark" type="submit" value="Submit">
 </div>
 </form>
 {% endblock %}

@@ -6,35 +6,25 @@
     {% csrf_token %}
     <div>
     <table>
-    {{ form.as_table }}
-    </table>
-    <h1>Clabject: {{ clabject_instance }} </h1>
-<p>Potency:{{clabject_instance.potency}} </p>
-<li>Subclass of:{{clabject.subclassOf}}
-
-  <p>Attributes:
-  {% for item in attribute_list %}
-    <li>Attribute: {{ item}}; DataType: {{ item.datatype}} ;Potency {{item.potency}}; Value: {{item.value }}</li>
-    {% if item.potency == 0 %}
-    <p>Please enter value for attribute {{item.name}}</p> 
-    <div class="fieldWrapper">
-      {{ form.InstantiateClabjectForm.errors }}
-      {{ form.InstantiateClabjectForm.label_tag }}
-      {{ form.InstantiateClabjectForm }}
-      {% endif %}
-  </div>
-  {% endfor %}</p>
-  {% for attribute in attribute_list %}
-<tr>
-  <td>{{ attribute.name }}</td>
-  <td>{{ attribute.datatype }}</td>
-  <td>{{ attribute.value }}</td>
- 
-</tr>
-{% endfor %}
-
-    <input type="submit" value="Submit">
-    <a href="{% url 'attribute-create' %}">Add attribute</a><hr>
-</div>
+    Name: {{ form.name }}
+    {{ form.errors.subclassOf }}
+   {{ form.subclassOf }}
+    InstanceOf: {{clabject_instance}}{{ form.instanceOf }}<hr>
+    {{ form.errors.instanceOf }}
+    Potency: {{ form.potency }}
+    {{ form.errors.potency }}                         {{ form.errors.mldiagram }}
+    Ml diagram: {{clabject_instance.mldiagram}}    {{form.mldiagram}}
+    </table><hr>
+  
+  <input class="btn btn-outline-dark" type="submit" value="Submit">
 </form>
+  <p>Attributes:
+    {% for item in attribute_list %}
+      <li>Name:  {{ item.name}}, Data Type: {{ item.datatype}}Potency: {{item.potency}} Value: {{item.value }}</li>
+    {% endfor %}</p>
+   
+ 
+
+</div>
+
 {% endblock %}

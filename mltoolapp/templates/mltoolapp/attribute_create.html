@@ -14,10 +14,11 @@
     {{ form.clabject.as_hidden }} 
     Potency: {{ form.potency }}
     DATA TYPE{{ form.data_type }}
+    
+    {{ form.errors.value }}
     Value: {{ form.value }}
     </p>
 </div>
-
     </table>
     <input class="btn btn-outline-dark" type="submit" value="Submit"><hr>
     <input type=button class="btn btn-outline-dark" value="Previous Page" onClick="javascript:history.go(-1);">

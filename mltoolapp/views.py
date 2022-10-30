@@ -1,9 +1,12 @@
+from attr import attributes
+from django import forms
+from django.forms import formset_factory, modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
-from mltoolapp.forms import CreateAttribute, CreateClabject, InstantiateClabjectForm
+from mltoolapp.forms import CreateAttribute, CreateClabject, InstantiateClabjectAttributeForm, InstantiateClabjectForm
 from .models import Clabject, Attribute, MLDiagram
 from django.views import generic
 
@@ -46,9 +49,7 @@ class ClabjectCreate(CreateView):
 class ClabjectUpdate(UpdateView):
     model = Clabject
     fields = '__all__' # Not recommended (potential security issue if more fields added)
-    
-    
-    
+       
 class ClabjectDelete(DeleteView):
     model = Clabject
     success_url = reverse_lazy('clabjects')
@@ -58,23 +59,9 @@ class AttributeCreate(CreateView):
     model = Attribute
     fields = ['clabject','name','data_type','value', 'potency']
     initial = {'name': 'Please enter a name'}
-    template_name = 'attribute_create.html'
-    '''
-    def home(request):
-        attribute = Attribute.objects.all()
-        return render(request, 'attribute_create.html', {'attribute': attribute})
-     '''
-''' class CreateAttributeView(CreateView):
-    # form_class = NewAttribute
-    template_name = 'attribute_create.html'
-
-    def form_valid(self, form):
-        clabject = Clabject.objects.get(pk=self.kwargs['pk'])
-        self.object = form.save(commit=False)
-        self.object.clabject = clabject
-        self.object.save()
+    #template_name = 'attribute_create.html'
     
-     '''
+    
 class AttributeUpdate(UpdateView):
     model = Clabject
     fields = '__all__' # Not recommended (potential security issue if more fields added)
@@ -151,9 +138,6 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-
-
-
     """ 
     Create a clabject using the CreateClabject form
     """   
@@ -169,7 +153,6 @@ def create_clabject_view(request, pk):
             return redirect('clabject-detail', new_clabject.id)
     else:
         form = CreateClabject(data)
-        print("The form object is:", form)
         context ={
         'form':form,
         'data':data,
@@ -187,9 +170,18 @@ def create_attribute_view(request, pk):
     }
     if request.method == 'POST':
         form = CreateAttribute(request.POST)
+        # It also validate that it has a value assigned if potency is 0
         if form.is_valid():
-            new_attribute = form.save()
+            form.save()
             return redirect('clabject-detail', clabject.id)
+        else:
+            # if potency is 0 and value to None throws ValidationError
+            context = {
+                'form':form,
+                'data':data,
+                'clabject':clabject
+                }
+            return render(request, 'mltoolapp/attribute_create.html', context)
     
     else:     
         form = CreateAttribute(data)
@@ -200,6 +192,68 @@ def create_attribute_view(request, pk):
     }
     return render(request, 'mltoolapp/attribute_create.html', context)
     
+
+
+
+def create_multiple_attributes(request,pk):
+    clabject = get_object_or_404(Clabject, pk=pk)
+    AttributeFormSet = modelformset_factory(Attribute, form=CreateAttribute)
+    # helper function
+    def minus_one(num):
+        if num >= 1:
+            num = num-1
+        return num
+    
+    data =Attribute.objects.filter(clabject=clabject.instanceOf)
+    
+    for attribute in data:
+        attribute.clabject = clabject
+        attribute.potency = minus_one(attribute.potency) 
+    print(data)
+
+    #formset = AttributeFormSet(data)
+    if request.method == 'POST':
+        print("I am at this lineeeeee")
+        formset = AttributeFormSet(request.POST, queryset=data)
+        print("Formset valid: ",formset.is_valid())
+        print("Formset bound: ",formset.is_bound)
+        print("The formset:", formset)
+        for form in formset:
+            print("This is a form",form)
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    print(form)
+                    new_attr = form.save(commit=False)
+                    new_attr.save
+                    return redirect('clabject-detail', clabject.id)
+        else:
+           
+            print(formset.errors)
+            formset = AttributeFormSet(queryset=data)
+        context ={
+            'formset': formset,
+            'data':data
+           
+        }
+        
+        return render(request,'mltoolapp/create_multiple_attributes.html', context )
+        
+    else:
+        formset = AttributeFormSet(queryset=data)
+        context ={
+            'formset': formset,
+            'data':data
+           
+        }
+        
+        return render(request,'mltoolapp/create_multiple_attributes.html', context )
+
+
+
+
+
+
 
 
 
@@ -219,42 +273,37 @@ def instantiate_clabject(request, pk):
     data = {
             
             'potency': minus_one(clabject_instance.potency),
-            'instanceOf': clabject_instance.name,
+            'instanceOf': clabject_instance,
             'mldiagram':clabject_instance.mldiagram,
             'attribute_list':attribute_list
         }
         
      # If this is a POST request then process the Form data
     if request.method == 'POST':
-        # Create a form instance and populate it with data from the request (binding):
-        # form = InstantiateClabjectForm(request.POST)
-        data = request.POST
-        print(data['potency'])
-        data['potency']
-        try:
-            new_clabject = Clabject( name=data['name'], potency = data['potency'],
-                                instanceOf = clabject_instance, mldiagram=clabject_instance.mldiagram, subclassOf = clabject_instance.subclassOf)
-       
-            new_clabject.save()
-            return HttpResponseRedirect(reverse('clabjects'))
-        except:
-            return HttpResponseRedirect(reverse('clabject-form'))
-        
-    
+        form = CreateClabject(request.POST)
+        if form.is_valid():
+            new_clabject = form.save()
+            return redirect('create_multiple_attributes', new_clabject.id, )
+        else:
+            context = {
+                'form':form,
+                'data':data,
+                'clabject_instance': clabject_instance,
+                'attribute_list':attribute_list
+                }
+            return render(request, 'mltoolapp/instantiate_clabject.html', context)
     else:
-         # form = InstantiateClabjectForm(request.GET)
-        print(clabject_instance.instanceOf)
-        print("goooooooooddd")
+        form = CreateClabject(data)
+        context ={
+        'form':form,
+        'data':data,
+        }
         form = InstantiateClabjectForm(data)
-        for attribute in attribute_list:
-            attribute.potency = minus_one(attribute.potency)
-
         context = {
             'form': form,
             'clabject_instance': clabject_instance,
             'attribute_list':attribute_list
             }
-        print(context)
     return render(request, 'mltoolapp/instantiate_clabject.html', context)
        
 

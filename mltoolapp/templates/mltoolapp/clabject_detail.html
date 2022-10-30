@@ -12,6 +12,7 @@
   {% endfor %}</p>
   <a href="{% url 'attribute-createxxx' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Add an Attribute</button></a>
   <a href="{% url 'clabject-update' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Update clabject</button></a>
-  <a href="{% url 'instantiate-clabject' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Instantiate clabject</button></a><hr>
-  <input type=button class="btn btn-outline-dark" value="Previous Page" onClick="javascript:history.go(-1);">
+  <a href="{% url 'instantiate-clabject' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Instantiate clabject</button></a>
+  <a href="{% url 'mldiagrams' %}"> <button type="button" class="btn btn-outline-dark">Back</button></a><hr>
+ 
 {% endblock %}

@@ -1,16 +1,22 @@
-
 from tkinter.tix import Form
+from django.forms import ValidationError
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 from django import forms
-
+from django.utils.translation import gettext_lazy as _
 from mltoolapp.models import Attribute, Clabject
 
 
-class InstantiateClabjectForm(forms.Form):
-       name = forms.CharField(max_length=100, required=True)
-       potency = forms.IntegerField(min_value=0 )
-       attr_value = forms.CharField()
+class InstantiateClabjectAttributeForm(forms.ModelForm):
+       class Meta:
+              model = Attribute
+              fields = '__all__'
+
+class InstantiateClabjectForm(forms.ModelForm):
+       class Meta:
+              model = Clabject
+              fields = '__all__'
+       
 
     
 # creating a form
@@ -24,7 +30,9 @@ class CreateClabject(forms.ModelForm):
                   'subclassOf',
                   'instanceOf',
                   ]
-             
+        
+           
+              
 # Form for the create attribute function view      
 class CreateAttribute(forms.ModelForm):
        class Meta:
@@ -36,5 +44,14 @@ class CreateAttribute(forms.ModelForm):
                   'clabject',
                   'value',
                   ]
-             
+       def clean(self):
+              cleaned_data = super().clean()
+              value = cleaned_data.get("value")
+              potency = cleaned_data.get("potency")
+              
+                     
+              if value is None and potency == 0:
+                     raise ValidationError( {'value': _('The Potency is 0 and this attribute needs a value, Please add a value!')} )
+                            
+                            
        

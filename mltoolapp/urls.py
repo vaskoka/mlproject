@@ -22,6 +22,7 @@ urlpatterns += [
    path('clabject/<int:pk>/instantiate/', views.instantiate_clabject, name='instantiate-clabject'),
    path('clabjectxxx/create/<int:pk>/create/', views.create_clabject_view, name='clabject-createxxx'),
    path('attributexxx/create/<int:pk>/create/', views.create_attribute_view , name='attribute-createxxx'),
+   path('clabject/<int:pk>/instantiate/multiple-attributes/', views.create_multiple_attributes , name='create_multiple_attributes'),
 ]
 
 # The create clubject wiew url
