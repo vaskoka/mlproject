@@ -1,29 +1,29 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1>Multi Level Database Design Tool</h1>
-
-<p>Welcome to <em>Multi Level Database design Tool</em> 
-
-
-<div>
-    
 {% load static %}
-<img src="{% static "images/sample_ml_model.png" %}" alt="Sample Multi level model" width="603px">
-</div>  
-
+<h1>MLDB: Multi level Database<br> Modelling Tool</h1>
+<p>Welcome to <em>MLDB: Multi Level Database Modelling Tool </em> </p><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
 <div>
-<h3>MLDB tool content</h3>
+    <h3>Model structure</h3>
+    <img src="{% static "images/sample_ml_model.png" %}" alt="Sample Multi level model" width="603px">
+</div><br><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
+<div>
+<h3>MLDB Modelling Tool Content</h3><br>
 
-<p>The MLDB tool has the following record counts:</p>
+<p>The MLDB Modelling Tool has the following record counts:</p><br>
+<p>
 <ul>
     <!-- diagrams, clabjects, attributes are defined in the views.py  index function -->
-<li><strong>MLDB diagrams:</strong> {{ num_mldiagrams }}</li>
-<li><strong>Clabjects:</strong> {{ num_clabjects }}</li>
-<li><strong>Attributes:</strong> {{ num_attributes }}</li>
+    <blockquote>
+    <li><strong>MLDB diagrams:</strong> {{ num_mldiagrams }}</li>
+    <li><strong>Clabjects:</strong> {{ num_clabjects }}</li>
+    <li><strong>Attributes:</strong> {{ num_attributes }}</li>
+    </blockquote>
 </ul>
-</div>
-
-<p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+</p>
+</div><br><br>
 
 {% endblock %}

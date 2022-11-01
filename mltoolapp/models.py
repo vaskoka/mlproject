@@ -42,16 +42,11 @@ class Clabject(models.Model):
     
     def __str__(self):
         return self.name 
-        """__str__ _summary_
-        """    
+      
     def get_absolute_url(self):
         """Returns the url to access a particular book instance."""
         return reverse('clabject-detail', args=[str(self.id)])
-        """get_absolute_url _summary_
-
-        Returns:
-            _type_: _description_
-        """    
+ 
               
 class Attribute(models.Model):
     DATA_TYPE = (

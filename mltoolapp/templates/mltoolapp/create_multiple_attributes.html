@@ -1,13 +1,19 @@
 
 {% extends "base_generic.html" %}
 {% block content %}
-   <h2>Add/ Update Attributes</h2>
+<h1>MLDB: Multi level Database<br> Modelling Tool</h1>
+<p>Welcome to <em>MLDB: Multi Level Database Modelling Tool </em> </p><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
+
+<h3>Add/ Update Attributes</h3>
 
    <form action="" method="post">
-       {{ formset.managment_form }}
-       {% csrf_token %}
+    {% csrf_token %}
+       {{ formset.management_form }}
        {% for form in formset %}
-           {{ form.as_table }}<hr>
+           {{ form.non_field_errors }}
+           {{ form.errors }}
+           {{ form }}<hr>
        {% endfor %}
        <button type="submit" value="Submit">Submit</button>
    </form>

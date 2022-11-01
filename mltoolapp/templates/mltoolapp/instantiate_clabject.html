@@ -1,21 +1,25 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<h1>MLDB: Multi level Database<br> Modelling Tool</h1>
+<p>Welcome to <em>MLDB: Multi Level Database Modelling Tool </em> </p><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
+
 
 <form action="" method="post">
     {% csrf_token %}
-    <div>
-    <table>
-    Name: {{ form.name }}
-    {{ form.errors.subclassOf }}
-   {{ form.subclassOf }}
-    InstanceOf: {{clabject_instance}}{{ form.instanceOf }}<hr>
-    {{ form.errors.instanceOf }}
-    Potency: {{ form.potency }}
-    {{ form.errors.potency }}                         {{ form.errors.mldiagram }}
-    Ml diagram: {{clabject_instance.mldiagram}}    {{form.mldiagram}}
-    </table><hr>
   
+      
+    Name: {{ form.name }}
+   
+   SubclassOf: {{ form.subclassOf }}
+    InstanceOf: {{clabject_instance}}{{ form.instanceOf.as_hidden }}<hr>
+   
+    Potency: {{ form.potency }}
+                      
+    Ml diagram: {{clabject_instance.mldiagram}}    {{form.mldiagram.as_hidden}}
+    <hr>
+    
   <input class="btn btn-outline-dark" type="submit" value="Submit">
 </form>
   <p>Attributes:

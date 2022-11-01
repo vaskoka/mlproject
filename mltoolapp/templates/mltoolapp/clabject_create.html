@@ -1,7 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<h1>MLDB: Multi level Database<br> Modelling Tool</h1>
+<p>Welcome to <em>MLDB: Multi Level Database Modelling Tool </em> </p><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
 
+<hr>
 <form action="" method="post">
     {% csrf_token %}
     <div>
@@ -9,12 +13,12 @@
        <hr>
        <h5>Create a new Clabject for {{ mldiagram}}</h5>
 
-
-    <div><p>Name: {{ form.name  }}<hr>
+                  
+    <div><p>Name: {{ form.name  }}</div>
     {{ form.mldiagram.as_hidden }} 
     Potency: {{ form.potency }}
-    instance Of{{ form.instanceOf }}
-    subclass Of{{ form.subclassOf }}
+    instance Of: {{ form.instanceOf }}
+    subclass Of: {{ form.subclassOf }}
     </p>
 </div>
 

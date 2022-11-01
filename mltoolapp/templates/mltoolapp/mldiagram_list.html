@@ -1,8 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<h1>MLDB: Multi level Database<br> Modelling Tool</h1>
+<p>Welcome to <em>MLDB: Multi Level Database Modelling Tool </em> </p><br>
+<hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
 
-<h1>ML diagrams</h1>
+<h3>Multi Level Diagrams</h3><br>
 
 {% if mldiagrams %}
   <ul>
@@ -18,7 +21,7 @@
 
  </ul>
 {% else %}
-  <p>There are no Multi level diagrams available. To create a new Multi level diagram select <a href="{% url 'mldiagram-create' %}">New ML diagram</a></p>
+  <p>There is no multi level diagram available. To create a new multi level diagram, select <a href="{% url 'mldiagram-create' %}">New ML diagram</a></p>
 {% endif %}
         
         

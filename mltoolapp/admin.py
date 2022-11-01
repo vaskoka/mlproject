@@ -3,11 +3,11 @@ from django.contrib import admin
 # Register your models here.
 from .models import  Clabject, Attribute, MLDiagram
 
-admin.site.register(Clabject)
-admin.site.register(Attribute)
+#admin.site.register(Clabject)
+#admin.site.register(Attribute)
 admin.site.register(MLDiagram)
 
-'''
+
 class AttributeInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin)"""
     model = Attribute
@@ -25,4 +25,3 @@ admin.site.register(Clabject, ClabjectAdmin)
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
     list_display = ('name','potency', 'clabject')
-    '''

@@ -15,6 +15,7 @@ urlpatterns = [
     path('attribute/<int:pk>', views.AttributeDetailView.as_view(), name='attribute-detail'),
     path('mldiagrams/', views.MLdiagramListView.as_view(), name='mldiagrams'),
     path('mldiagam/<slug:slug>/', views.MLDiagramDetailView.as_view(), name='mldiagram-detail'),
+   
     
 ]
 
@@ -23,6 +24,7 @@ urlpatterns += [
    path('clabjectxxx/create/<int:pk>/create/', views.create_clabject_view, name='clabject-createxxx'),
    path('attributexxx/create/<int:pk>/create/', views.create_attribute_view , name='attribute-createxxx'),
    path('clabject/<int:pk>/instantiate/multiple-attributes/', views.create_multiple_attributes , name='create_multiple_attributes'),
+   
 ]
 
 # The create clubject wiew url

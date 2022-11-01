@@ -1,12 +1,10 @@
-from attr import attributes
-from django import forms
-from django.forms import formset_factory, modelformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
-from mltoolapp.forms import CreateAttribute, CreateClabject, InstantiateClabjectAttributeForm, InstantiateClabjectForm
+from mltoolapp.forms import CreateAttribute, CreateClabject, InstantiateClabjectForm
 from .models import Clabject, Attribute, MLDiagram
 from django.views import generic
 
@@ -193,66 +191,68 @@ def create_attribute_view(request, pk):
     return render(request, 'mltoolapp/attribute_create.html', context)
     
 
-
+'''    
 
 def create_multiple_attributes(request,pk):
-    clabject = get_object_or_404(Clabject, pk=pk)
-    AttributeFormSet = modelformset_factory(Attribute, form=CreateAttribute)
+    #clabject = get_object_or_404(Clabject, pk=pk)
+    clabject = Clabject.objects.get(pk=pk)
+    AttributeFormSet = modelformset_factory(Attribute, fields='__all__')
     # helper function
     def minus_one(num):
         if num >= 1:
             num = num-1
         return num
-    
-    data =Attribute.objects.filter(clabject=clabject.instanceOf)
-    
+    data = Attribute.objects.filter(clabject=clabject.instanceOf)
     for attribute in data:
         attribute.clabject = clabject
         attribute.potency = minus_one(attribute.potency) 
-    print(data)
-
     #formset = AttributeFormSet(data)
     if request.method == 'POST':
-        print("I am at this lineeeeee")
-        formset = AttributeFormSet(request.POST, queryset=data)
-        print("Formset valid: ",formset.is_valid())
-        print("Formset bound: ",formset.is_bound)
-        print("The formset:", formset)
-        for form in formset:
-            print("This is a form",form)
+        formset = AttributeFormSet(request.POST, queryset=Attribute.objects.filter(clabject=clabject))
+        print("Iam here")
+        print(formset.is_valid())
         if formset.is_valid():
             for form in formset:
-                if form.is_valid():
-                    print(form)
-                    new_attr = form.save(commit=False)
-                    new_attr.save
-                    return redirect('clabject-detail', clabject.id)
+                print("Iam here")
+                new_attr = form.save(commit=False)
+                new_attr.save() 
         else:
-           
-            print(formset.errors)
-            formset = AttributeFormSet(queryset=data)
-        context ={
-            'formset': formset,
-            'data':data
-           
-        }
-        
-        return render(request,'mltoolapp/create_multiple_attributes.html', context )
-        
+            return render(request,'mltoolapp/create_multiple_attributes.html', {'formset': formset} )
+                
     else:
-        formset = AttributeFormSet(queryset=data)
+        formset = AttributeFormSet(queryset=Attribute.objects.filter(clabject=clabject))
         context ={
-            'formset': formset,
-            'data':data
-           
+            'formset': formset
         }
-        
         return render(request,'mltoolapp/create_multiple_attributes.html', context )
 
-
-
-
-
+   '''
+   
+   
+   
+   
+    
+# AttributeInlineFormSet Attempt
+def create_multiple_attributes(request, pk):
+    clabject = Clabject.objects.get(pk=pk)
+    AttributeInlineFormSet = inlineformset_factory(Clabject, Attribute, fields=('name','potency','value','data_type', ), extra=1)
+    if request.method == "POST":
+        formset = AttributeInlineFormSet(request.POST, instance=clabject)
+      
+        print(formset.is_valid())
+        print("FormsetAfter:   ",formset)
+        print(formset.non_form_errors())
+        if formset.is_valid():
+            
+            print("FormsetAfter:   ",formset)
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return redirect('create_multiple_attributes', pk=pk)
+    
+    formset = AttributeInlineFormSet(instance=clabject)   
+    print("Iam hereeeeee")
+    return render(request, 'mltoolapp/create_multiple_attributes.html', {'formset': formset})
+    
 
 
 
@@ -266,6 +266,7 @@ def create_multiple_attributes(request,pk):
 def instantiate_clabject(request, pk):
     clabject_instance = get_object_or_404(Clabject, pk=pk)
     attribute_list = Attribute.objects.filter(clabject=clabject_instance)
+    # helper function
     def minus_one(num):
         if num >= 1:
             num = num-1
@@ -273,8 +274,8 @@ def instantiate_clabject(request, pk):
     data = {
             
             'potency': minus_one(clabject_instance.potency),
-            'instanceOf': clabject_instance,
-            'mldiagram':clabject_instance.mldiagram,
+            'instanceOf': clabject_instance.id,
+            'mldiagram':clabject_instance.mldiagram.id,
             'attribute_list':attribute_list
         }
         
@@ -283,6 +284,11 @@ def instantiate_clabject(request, pk):
         form = CreateClabject(request.POST)
         if form.is_valid():
             new_clabject = form.save()
+            for attribute in attribute_list:
+                attribute.clabject = new_clabject
+                new_attribute =Attribute(name=attribute.name, data_type=attribute.data_type, value=attribute.value, clabject=new_clabject, potency = minus_one(attribute.potency))
+                new_attribute.save()
+                
             return redirect('create_multiple_attributes', new_clabject.id, )
         else:
             context = {
@@ -293,11 +299,7 @@ def instantiate_clabject(request, pk):
                 }
             return render(request, 'mltoolapp/instantiate_clabject.html', context)
     else:
-        form = CreateClabject(data)
-        context ={
-        'form':form,
-        'data':data,
-        }
+      
         form = InstantiateClabjectForm(data)
         context = {
             'form': form,
@@ -305,6 +307,7 @@ def instantiate_clabject(request, pk):
             'attribute_list':attribute_list
             }
     return render(request, 'mltoolapp/instantiate_clabject.html', context)
+
        
 
     
