@@ -191,51 +191,14 @@ def create_attribute_view(request, pk):
     return render(request, 'mltoolapp/attribute_create.html', context)
     
 
-'''    
 
-def create_multiple_attributes(request,pk):
-    #clabject = get_object_or_404(Clabject, pk=pk)
-    clabject = Clabject.objects.get(pk=pk)
-    AttributeFormSet = modelformset_factory(Attribute, fields='__all__')
-    # helper function
-    def minus_one(num):
-        if num >= 1:
-            num = num-1
-        return num
-    data = Attribute.objects.filter(clabject=clabject.instanceOf)
-    for attribute in data:
-        attribute.clabject = clabject
-        attribute.potency = minus_one(attribute.potency) 
-    #formset = AttributeFormSet(data)
-    if request.method == 'POST':
-        formset = AttributeFormSet(request.POST, queryset=Attribute.objects.filter(clabject=clabject))
-        print("Iam here")
-        print(formset.is_valid())
-        if formset.is_valid():
-            for form in formset:
-                print("Iam here")
-                new_attr = form.save(commit=False)
-                new_attr.save() 
-        else:
-            return render(request,'mltoolapp/create_multiple_attributes.html', {'formset': formset} )
-                
-    else:
-        formset = AttributeFormSet(queryset=Attribute.objects.filter(clabject=clabject))
-        context ={
-            'formset': formset
-        }
-        return render(request,'mltoolapp/create_multiple_attributes.html', context )
-
-   '''
-   
-   
    
    
     
 # AttributeInlineFormSet Attempt
 def create_multiple_attributes(request, pk):
     clabject = Clabject.objects.get(pk=pk)
-    AttributeInlineFormSet = inlineformset_factory(Clabject, Attribute, fields=('name','potency','value','data_type', ), extra=1)
+    AttributeInlineFormSet = inlineformset_factory(Clabject, Attribute,form=CreateAttribute, fields=('name','potency','value','data_type', ), extra=1)
     if request.method == "POST":
         formset = AttributeInlineFormSet(request.POST, instance=clabject)
       
