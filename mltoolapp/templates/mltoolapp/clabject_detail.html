@@ -6,13 +6,16 @@
 <hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
 
 <h1>Clabject: {{ clabject }} </h1>
-<p>Instance of:{{clabject.instanceOf}} </p>
-<li>Subclass of:{{clabject.subclassOf}}
-
-  <p>Attributes:
+<ul>
+<li>Instance of:{{clabject.instanceOf}} </li>
+<li>Subclass of:{{clabject.subclassOf}} </li>
+</ul>
+  <h5>Attributes:</h5>
+  <ul>
   {% for item in items %}
-    <li> {{ item}}{{ item.datatype}} {{item.value }}</li>
-  {% endfor %}</p>
+  <li>{{ item.name}} {% if item.value != 'null' and item.value is not None %} = {{item.value }} {% else%} : {{item.data_type}} {% endif %}</li>
+  {% endfor %}
+  </ul>
   <a href="{% url 'attribute-createxxx' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Add an Attribute</button></a>
   <a href="{% url 'clabject-update' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Update clabject</button></a>
   <a href="{% url 'instantiate-clabject' clabject.id %}"> <button type="button" class="btn btn-outline-dark">Instantiate clabject</button></a>

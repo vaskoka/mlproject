@@ -30,7 +30,7 @@
         <a href="{% url 'mldiagram-create' %}" class="menu-item">New ML diagram</a>
         <a href="{% url 'mldiagrams' %}" class="menu-item">ML diagrams list</a>
         {% comment %} <a href="{% url 'clabject-create' %}" class="menu-item">New clabject</a> {% endcomment %}
-        <a href="{% url 'clabjects' %}" class="menu-item">All clabjects</a>
+        {% comment %} <a href="{% url 'clabjects' %}" class="menu-item">All clabjects</a> {% endcomment %}
         {% comment %} <a href="{% url 'attribute-create' %}" class="menu-item">New Attribute</a> {% endcomment %}
       
         <!-- User login functionality, Not implemented -->
@@ -82,6 +82,6 @@
         sidebar.classList.toggle('is-active');
       });
     </script>
-  
+  </div>
 </body>
 </html>

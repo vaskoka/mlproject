@@ -7,26 +7,24 @@
 
 
 <form action="" method="post">
-    {% csrf_token %}
-  
-      
+    {% csrf_token %} 
+    <h5>New Clabject:</h5><br>
     Name: {{ form.name }}
-   
-   SubclassOf: {{ form.subclassOf }}
+    SubclassOf: {{ form.subclassOf }}
     InstanceOf: {{clabject_instance}}{{ form.instanceOf.as_hidden }}<hr>
-   
-    Potency: {{ form.potency }}
-                      
+    Potency: {{ form.potency }}              
     Ml diagram: {{clabject_instance.mldiagram}}    {{form.mldiagram.as_hidden}}
     <hr>
     
   <input class="btn btn-outline-dark" type="submit" value="Submit">
-</form>
-  <p>Attributes:
+  <input type=button class="btn btn-outline-dark" value="Previous Page" onClick="javascript:history.go(-1);"><hr>
+</form><br>
+  <p>Attributes:</p>
+  <ul>
     {% for item in attribute_list %}
-      <li>Name:  {{ item.name}}, Data Type: {{ item.datatype}}Potency: {{item.potency}} Value: {{item.value }}</li>
-    {% endfor %}</p>
-   
+      <li>{{ item.name}} {% if item.value != 'null' and item.value is not None %} = {{item.value }} {% else%} : {{item.data_type}} {% endif %}</li>
+    {% endfor %}
+  </ul>
  
 
 </div>
