@@ -1,5 +1,4 @@
-from django.forms import inlineformset_factory, modelformset_factory
-from django.http import HttpResponseRedirect
+from django.forms import inlineformset_factory
 from django.shortcuts import redirect, render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -35,7 +34,7 @@ class ClabjectDetailView(generic.DetailView):
         # Call the base implementation first to get the context
         context = super(ClabjectDetailView, self).get_context_data(**kwargs)
         clabject_obj = self.object # this contain the object that the view is operating upon
-        # Create any data and add it to the context
+        # Add the attributes for this instance of the clabject in the context
         context['items'] = Attribute.objects.filter(clabject=clabject_obj)
         return context
 
@@ -47,7 +46,8 @@ class ClabjectCreate(CreateView):
 class ClabjectUpdate(UpdateView):
     model = Clabject
     fields = '__all__' # Not recommended (potential security issue if more fields added)
-       
+ 
+# Not used        
 class ClabjectDelete(DeleteView):
     model = Clabject
     success_url = reverse_lazy('clabjects')
@@ -57,13 +57,14 @@ class AttributeCreate(CreateView):
     model = Attribute
     fields = ['clabject','name','data_type','value', 'potency']
     initial = {'name': 'Please enter a name'}
-    #template_name = 'attribute_create.html'
+
     
     
 class AttributeUpdate(UpdateView):
     model = Clabject
     fields = '__all__' # Not recommended (potential security issue if more fields added)
 
+# Not used in the present version
 class AttributeDelete(DeleteView):
     model = Clabject
     success_url = reverse_lazy('attributes')
@@ -81,9 +82,7 @@ class MLdiagramListView(generic.ListView):
     model = MLDiagram
     context_object_name = 'mldiagrams'
     template_name = 'mldiagram_list.html'
-    
-
-    
+       
 
     """ 
     Detail view of the MLdiagram model
@@ -103,6 +102,7 @@ class MLDiagramDetailView(generic.DetailView):
         # Return the clabject and attribute objects 
         clabject_items = Clabject.objects.filter(mldiagram=mldiagram_obj)
         attribute_items = Attribute.objects.all()
+        # Add the clabjects and attributes to the context
         context ['clabject_items'] = clabject_items
         context ['attribute_items'] = attribute_items
         return context 
@@ -140,16 +140,19 @@ def index(request):
     Create a clabject using the CreateClabject form
     """   
 def create_clabject_view(request, pk):
+    # Read the The mldiagram that will take the new clabject
     mldiagram = get_object_or_404(MLDiagram, pk=pk)
     data = {
         'mldiagram': mldiagram
     }
     if request.method == 'POST':
         form = CreateClabject(request.POST)
+        # Validate and save the clabject as a new clabject
         if form.is_valid():
             new_clabject = form.save()
             return redirect('clabject-detail', new_clabject.id)
     else:
+        # Create a form and bind the data to be submited 
         form = CreateClabject(data)
         context ={
         'form':form,
@@ -162,6 +165,7 @@ def create_clabject_view(request, pk):
         Create an attribute using the CreateAttribute form
     """    
 def create_attribute_view(request, pk):
+    # Get the clabject for the new attribute
     clabject = get_object_or_404(Clabject, pk=pk)
     data = {
         'clabject': clabject
@@ -181,7 +185,8 @@ def create_attribute_view(request, pk):
                 }
             return render(request, 'mltoolapp/attribute_create.html', context)
     
-    else:     
+    else:  
+        # Create a form and bind the data
         form = CreateAttribute(data)
         context ={
         'form':form,
@@ -193,27 +198,27 @@ def create_attribute_view(request, pk):
 
 
    
-   
-    
-# AttributeInlineFormSet Attempt
+    """ Create multiple attributes is an inline formset that is a part of the instantiation of a clabject,
+    once the new clabject instance is completed the form with all the existing attributes appears and allows adding or update attributes.
+ 
+    """
 def create_multiple_attributes(request, pk):
     clabject = Clabject.objects.get(pk=pk)
     AttributeInlineFormSet = inlineformset_factory(Clabject, Attribute,form=CreateAttribute, fields=('name','potency','value','data_type', ), extra=1)
     if request.method == "POST":
         formset = AttributeInlineFormSet(request.POST, instance=clabject)
-      
+        # for debugging - print in terminal
         print(formset.is_valid())
         print("FormsetAfter:   ",formset)
         print(formset.non_form_errors())
         if formset.is_valid():
-            
+            # for debugging - print in terminal
             print("FormsetAfter:   ",formset)
             formset.save()
-            # Do something. Should generally end with a redirect. For example:
+            # Returns the same form with updated information
             return redirect('create_multiple_attributes', pk=pk)
     
     formset = AttributeInlineFormSet(instance=clabject)   
-    print("Iam hereeeeee")
     return render(request, 'mltoolapp/create_multiple_attributes.html', {'formset': formset})
     
 
@@ -224,16 +229,20 @@ def create_multiple_attributes(request, pk):
 
 
 
-    """ _summary_
+    """ Instantiate clubject takes a clabject and creates a new instance following the rules of multi level modeling.
+    This is the first wiew of the instantiation.
     """
 def instantiate_clabject(request, pk):
+    # Get the clabject to be instantiated
     clabject_instance = get_object_or_404(Clabject, pk=pk)
+    # create a list of all the attributes assosiated with this instance of the clabject
     attribute_list = Attribute.objects.filter(clabject=clabject_instance)
-    # helper function
+    # helper function to reduce potency by one
     def minus_one(num):
         if num >= 1:
             num = num-1
         return num
+    # bind the data from the form
     data = {
             
             'potency': minus_one(clabject_instance.potency),
@@ -246,8 +255,10 @@ def instantiate_clabject(request, pk):
     if request.method == 'POST':
         form = CreateClabject(request.POST)
         if form.is_valid():
+            # Save the new clabject
             new_clabject = form.save()
             for attribute in attribute_list:
+                # Add the attributes to the new clabject, potency is reduced by one, attributes will be reviewed by the user in add/update form. 
                 attribute.clabject = new_clabject
                 new_attribute =Attribute(name=attribute.name, data_type=attribute.data_type, value=attribute.value, clabject=new_clabject, potency = minus_one(attribute.potency))
                 new_attribute.save()

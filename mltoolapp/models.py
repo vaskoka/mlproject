@@ -1,5 +1,4 @@
 from django.db.models import UniqueConstraint
-from random import choices
 from django.urls import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -13,6 +12,7 @@ class MLDiagram(models.Model):
     def __str__(self):
         return self.name 
     
+    # creates a slug of the name fo URL (for examle Product diagram -> Product-diagram)
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -20,7 +20,7 @@ class MLDiagram(models.Model):
     
 
     def get_absolute_url(self):
-        """Returns the url to access a particular book instance."""
+        """Returns the url to access a particular mldiagram instance."""
         return reverse('mldiagram-detail',  args=[str(self.slug)])
 
 
@@ -34,6 +34,7 @@ class Clabject(models.Model):
     
     class Meta:
         constraints = [
+            # Unique name within one mldiagram
             UniqueConstraint(
                 fields=['name', 'mldiagram'],
                 name='unique_clabject'),
@@ -66,6 +67,7 @@ class Attribute(models.Model):
     class Meta:
         ordering = ['name']
         constraints = [
+            # Unique attribute name within one clabject
             UniqueConstraint(
                 fields=['name', 'clabject'],
                 name='unique_attribute'),
@@ -75,14 +77,8 @@ class Attribute(models.Model):
     def __str__(self):
            return self.name
     
-    def display_attributes(self):
-        """Create a string for the Genre. This is required to display genre in Admin."""
-        return self.clabject # .join([clabject for clabject in self.clabject.all()])
-
-    display_attributes.short_description = 'Clabject'
-    
     
     def get_absolute_url(self):
-        """Returns the url to access a particular book instance."""
+        """Returns the url to access a particular attribute instance."""
         return reverse('attribute-detail', args=[str(self.id)])
 

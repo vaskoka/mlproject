@@ -6,6 +6,12 @@
 <hr style="height:3px;border-width:0;color:#161930;background-color:#161930"><br>
 
 <h3>Add/ Update Attributes</h3>
+<p>To add new attribute:</p>
+<ul>
+    <li>The attribute must have a name</li>
+    <li>The attribute must have a potency and a selected data type</li>
+    <li>For attributes wth a potency of 0 the attribute must to have a value</li>
+    <li>If the above conditions are not met the attribute will not be added/updated</li><br>
 
    <form action="" method="post">
     {% csrf_token %}
@@ -15,6 +21,7 @@
            {{ form.errors }}
            {{ form }}<hr>
        {% endfor %}
-       <button type="submit" value="Save">Submit</button>
+       <button class="btn btn-outline-dark" type="submit" value="Save">Save</button>
+       <a href="{% url 'mldiagrams' %}"> <button type="button" class="btn btn-outline-dark">Back to ML diagrams</button></a><hr>
    </form>
 {% endblock content %}

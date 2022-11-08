@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -29,9 +29,9 @@ urlpatterns += [
 
 # The create clubject wiew url
 urlpatterns += [
-    path('clabject/create/', views.ClabjectCreate.as_view(), name='clabject-create'),
-    path('clabject/<int:pk>/update/', views.ClabjectUpdate.as_view(), name='clabject-update'),
-    path('clabject/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='clabject-delete'),
+#    path('clabject/create/', views.ClabjectCreate.as_view(), name='clabject-create'),
+     path('clabject/<int:pk>/update/', views.ClabjectUpdate.as_view(), name='clabject-update'),
+#    path('clabject/<int:pk>/delete/', views.ClabjectDelete.as_view(), name='clabject-delete'),
 ]
 
 # The create Attribute wiew url
